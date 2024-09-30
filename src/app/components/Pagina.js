@@ -1,4 +1,4 @@
-import { Container, Nav, NavDropdown, Navbar } from "react-bootstrap";
+import { Button, Container, Nav, NavDropdown, Navbar } from "react-bootstrap";
 
 export default function Pagina(props) {
     return (
@@ -8,8 +8,12 @@ export default function Pagina(props) {
                     <Navbar.Brand href="http://localhost:3000/">Voe Mais</Navbar.Brand>
                     <Nav className="me-auto">
                         <Nav.Link href="/empresas">Empresas</Nav.Link>
-                        <Nav.Link href="/empresas/create">Create</Nav.Link>
-                        <Nav.Link href="/atores">Atores</Nav.Link>
+                        <Nav.Link href="/aeroportos">Aeroportos</Nav.Link>
+                        <Nav.Link href="/passageiros">Passageiros</Nav.Link>
+                        <Nav.Link href="/passagens">Passagens</Nav.Link>
+                        <Nav.Link href="/voos">voos</Nav.Link>
+                        
+                        {/*                        
                         <NavDropdown title="Filmes" id="basic-nav-dropdown">
                             <NavDropdown.Item href="/filmes">
                                Formularios
@@ -20,6 +24,7 @@ export default function Pagina(props) {
                             </NavDropdown.Item>
                             <NavDropdown.Divider />
                         </NavDropdown>
+                        */}
                     </Nav>
                 </Container>
             </Navbar>

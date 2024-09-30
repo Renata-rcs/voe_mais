@@ -3,6 +3,7 @@
 import Pagina from "@/app/components/Pagina";
 import { Formik } from "formik";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Button, Form } from "react-bootstrap";
 import { FaCheck } from "react-icons/fa";
 import { FaArrowLeft } from "react-icons/fa";
@@ -13,16 +14,23 @@ import { FaArrowLeft } from "react-icons/fa";
 
 export default function Page() {
 
+    const route = useRouter()
     function salvar(dados){
-        console.log(dados)
+        const empresas = JSON.parse(localStorage.getItem("empresas")) ||  []
+        empresas.push(dados)
+        localStorage.setItem('empresas', JSON.stringify(empresas))
+        return route.push('/empresas')
     }
 
 
     return (
         <Pagina titulo='Empresa'>
             <Formik
-                initialValues={{ nome: '', logo: '' }}
-                onSubmit={values=>salvar(values)}
+                initialValues={{ nome: '', logo: '', site: '' }}
+                onSubmit={(values, { resetForm }) => {
+                    salvar(values)
+                    resetForm() 
+                }}
             >
                 {({
                     values,
@@ -47,6 +55,15 @@ export default function Page() {
                                 name="logo" 
                                 values={values.logo}
                                 onChange={handleChange('logo')}
+                            />
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="logo">
+                            <Form.Label>Site</Form.Label>
+                            <Form.Control 
+                                type="text" 
+                                name="logo" 
+                                values={values.site}
+                                onChange={handleChange('site')}
                             />
                         </Form.Group>
 
