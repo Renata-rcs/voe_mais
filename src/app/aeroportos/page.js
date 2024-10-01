@@ -5,13 +5,16 @@ import Pagina from "../components/Pagina";
 import { FaPlusCircle } from "react-icons/fa";
 import { Table } from "react-bootstrap";
 import { FaArrowLeft } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
+import { FaEdit } from "react-icons/fa";
+
 
 
 
 export default function Page() {
 
     const aeroportos = JSON.parse(localStorage.getItem("aeroportos")) || [];
-    let numero = 1
+    
 
 
   return (
@@ -32,8 +35,11 @@ export default function Page() {
         </thead>
         <tbody>
           {aeroportos.map((item) => (
-            <tr key={item.key}>
-              <td>{numero++}</td>
+            <tr key={item.id}>
+               <td>
+                <FaEdit className="text-primary" />
+                <MdDelete className="text-danger" />
+              </td>
               <td>{item.nome}</td>
               <td>{item.sigla}</td>
               <td>{item.uf}</td>

@@ -5,10 +5,13 @@ import Link from "next/link";
 import { Table } from "react-bootstrap";
 import { FaPlusCircle } from "react-icons/fa";
 import { FaArrowLeft } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
+import { FaEdit } from "react-icons/fa";
+
 
 export default function Page() {
   const voos = JSON.parse(localStorage.getItem("voos")) || [];
-  let numero = 1;
+ 
 
   return (
     <Pagina titulo="Voos">
@@ -30,9 +33,12 @@ export default function Page() {
           </tr>
         </thead>
         <tbody>
-          {voos.map((item) => (
-            <tr key={item.key}>
-              <td>{numero++}</td>
+          {voos.map((item, i) => (
+            <tr key={item.id}>
+              <td> 
+                <FaEdit className="text-primary" />
+                <MdDelete className="text-danger" />
+              </td>
               <td>{item.iternacional}</td>
               <td>{item.identificador}</td>
               <td>{item.dataCheckin}</td>

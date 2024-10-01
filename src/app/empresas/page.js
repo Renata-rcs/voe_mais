@@ -5,10 +5,30 @@ import Pagina from "../components/Pagina";
 import { FaPlusCircle } from "react-icons/fa";
 import { Image, Table } from "react-bootstrap";
 import { FaArrowLeft } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
+import { FaEdit } from "react-icons/fa";
+import { useEffect, useState } from "react";
+
 
 export default function Page() {
-  const empresas = JSON.parse(localStorage.getItem("empresas")) || [];
-  let numero = 1
+
+  const [empresas, setEmpresas] = useState([])
+
+  useEffect(()=>{
+    setEmpresas(JSON.parse(localStorage.getItem("empresas")) || [])
+  }, [])
+
+  
+
+  function excluir(id){
+    if(confirm("Deseja realmente excluir o registro?")){
+      const dados =  empresas.filter(item=>item.id != id)
+      localStorage.setItem('empresas', JSON.stringify(dados))
+      setEmpresas(dados)
+    }
+
+  }
+  
   //   let empresas = localStorage.getItem('empresas')
   //   empresas = empresas ? JSON.parse(empresas) : []
 
@@ -35,8 +55,18 @@ export default function Page() {
         </thead>
         <tbody>
           {empresas.map((item) => (
-            <tr key={item.key}>
-              <td>{numero++}</td>
+            <tr key={item.id}>
+              <td>
+              {item.id}
+                <Link href={`/empresas/edit/${item.id}`}>
+                <FaEdit title="Editar"className="text-primary" />
+                </Link>
+                <MdDelete 
+                  title="Excluir"
+                  className="text-danger" 
+                  onClick={()=> excluir(item.id)}  
+                />
+              </td>
               <td>{item.nome}</td>
               <td>
                 <a target="_blanck" href={item.site}>

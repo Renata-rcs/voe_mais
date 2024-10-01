@@ -3,11 +3,14 @@
 import Pagina from "@/app/components/Pagina";
 import Link from "next/link";
 import { Table } from "react-bootstrap";
-import { FaPlusCircle } from "react-icons/fa";
+import { FaArrowLeft, FaPlusCircle } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
+import { FaEdit } from "react-icons/fa";
+
 
 export default function Page() {
   const passageiros = JSON.parse(localStorage.getItem("passageiros")) || [];
-  let numero = 1;
+  
 
   return (
     <Pagina titulo="Passageiros">
@@ -27,9 +30,12 @@ export default function Page() {
           </tr>
         </thead>
         <tbody>
-          {passageiros.map((item) => (
-            <tr key={item.key}>
-              <td>{numero++}</td>
+          {passageiros.map((item, i) => (
+            <tr key={item.id}>
+               <td>
+                <FaEdit className="text-primary" />
+                <MdDelete className="text-danger" />
+              </td>
               <td>{item.nome}</td>
               <td>{item.tipoDocumento}</td>
               <td>{item.documento}</td>
@@ -40,6 +46,9 @@ export default function Page() {
           ))}
         </tbody>
       </Table>
+      <Link href="http://localhost:3000" className="btn btn-danger ms-2">
+        <FaArrowLeft /> Home
+      </Link>
     </Pagina>
   );
 }
