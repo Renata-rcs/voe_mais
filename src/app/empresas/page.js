@@ -8,6 +8,7 @@ import { FaArrowLeft } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 
 export default function Page() {
@@ -20,14 +21,24 @@ export default function Page() {
 
   
 
-  function excluir(id){
-    if(confirm("Deseja realmente excluir o registro?")){
-      const dados =  empresas.filter(item=>item.id != id)
-      localStorage.setItem('empresas', JSON.stringify(dados))
-      setEmpresas(dados)
-    }
-
+  function excluir(id) {
+    Swal.fire({
+      title: "Você tem certeza?",
+      text: "Essa ação não poderá ser desfeita!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sim, excluir!",
+      cancelButtonText: "Não, cancelar!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const dados = empresas.filter((item) => item.id !== id);
+        localStorage.setItem("empresas", JSON.stringify(dados));
+        setEmpresas(dados);
+        Swal.fire("Excluído!", "Registro foi excluído.", "success");
+      }
+    });
   }
+  
   
   //   let empresas = localStorage.getItem('empresas')
   //   empresas = empresas ? JSON.parse(empresas) : []
@@ -84,3 +95,5 @@ export default function Page() {
     </Pagina>
   );
 }
+
+

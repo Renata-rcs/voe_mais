@@ -1,37 +1,51 @@
-
 'use client'
 
-import Pagina from "@/app/components/Pagina"
-import { Formik } from "formik"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { Button, Form } from "react-bootstrap"
-import { FaArrowLeft, FaCheck } from "react-icons/fa"
+import Pagina from "@/app/components/Pagina";
+import { Formik } from "formik";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { Button, Form } from "react-bootstrap";
+import { FaCheck } from "react-icons/fa";
+import { MdOutlineArrowBack } from "react-icons/md";
+import { v4 } from 'uuid';
 
-
-
-export default function Page(){
+export default function Page({params}) {
 
     const route = useRouter()
 
+    const [passagem, setPassagem] = useState({ voo: '', passageiro: '', assento: '', preco: ''})
+
+useEffect(()=>{
+
+    const passagens = JSON.parse(localStorage.getItem('passagens')) || []
+    const dados = passagens.find(item => item.id == params.id)
+    setPassagem(dados)
+
+
+
+}, [])
+
     function salvar(dados){
-        const passagens = JSON.parse(localStorage.getItem("passagens")) || []
-        passagens.push(dados)
-        localStorage.setItem('passagens' , JSON.stringify(passagens))
-        return route.push('/passagens')
+                  
+        const passagens = JSON.parse(localStorage.getItem('passagens')) || []
         
+        //Gerando Id com a biblioteca do uuid va
+        dados.id = v4()
+
+        passagens.push(dados)
+        localStorage.setItem('passagens', JSON.stringify(passagens))
+        return route.push('/passagens')
     }
-    
+
     return (
-        <Pagina titulo="Passagens">
+        <Pagina titulo="Passagem">
+
             <Formik
-                initialValues={{ voo: '', passageiro: '', assento: '', preco: ''}}
-                onSubmit={(values, { resetForm }) => {
-                    salvar(values)
-                    resetForm() 
-                }}
+                initialValues={passagem}
+                onSubmit={values=>salvar(values)}
             >
-                {({
+                 {({
                     values,
                     handleChange,
                     handleSubmit
@@ -75,20 +89,18 @@ export default function Page(){
                         </Form.Group>
                         <div className="text-center">
                             <Button onClick={handleSubmit} variant="success">
-                                <FaCheck />  Salvar
+                                <FaCheck /> Salvar
                             </Button>
                             <Link
-                            href="/aeroportos"
-                            className="btn btn-danger ms-2"
+                                href="/empresas"
+                                className="btn btn-danger ms-2"
                             >
-                                <FaArrowLeft /> Voltar
+                                <MdOutlineArrowBack /> Voltar
                             </Link>
-
                         </div>
                     </Form>
                 )}
             </Formik>
         </Pagina>
-    )    
+    )
 }
-

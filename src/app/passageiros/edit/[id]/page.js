@@ -1,35 +1,49 @@
-
 'use client'
 
-import Pagina from "@/app/components/Pagina"
-import { Formik } from "formik"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { Button, Form } from "react-bootstrap"
-import { FaArrowLeft, FaCheck } from "react-icons/fa"
+import Pagina from "@/app/components/Pagina";
+import { Formik } from "formik";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { Button, Form } from "react-bootstrap";
+import { FaCheck } from "react-icons/fa";
+import { MdOutlineArrowBack } from "react-icons/md";
+import { v4 } from 'uuid';
 
-
-
-export default function Page(){
+export default function Page({params}) {
 
     const route = useRouter()
 
+    const [passageiro, setPassageiro] = useState({ nomeCompleto: '', tipoDocumento: '', documento: '', email: '', telefone: '', dataNascimento:'' })
+
+useEffect(()=>{
+
+    const passageiros = JSON.parse(localStorage.getItem('passageiros')) || []
+    const dados = passageiros.find(item => item.id == params.id)
+    setPassageiro(dados)
+
+
+
+}, [])
+
     function salvar(dados){
-        const passageiros = JSON.parse(localStorage.getItem("passageiros")) || []
-        passageiros.push(dados)
-        localStorage.setItem('passageiros' , JSON.stringify(passageiros))
-        return route.push('/passageiros')
+                  
+        const passageiros = JSON.parse(localStorage.getItem('passageiros')) || []
         
+        //Gerando Id com a biblioteca do uuid va
+        dados.id = v4()
+
+       passageiros.push(dados)
+        localStorage.setItem('passageiros', JSON.stringify(passageiros))
+        return route.push('/passageiros')
     }
-    
+
     return (
         <Pagina titulo="Passageiro">
+
             <Formik
-                initialValues={{ nomeCompleto: '', tipoDocumento: '', documento: '', email: '', telefone: '', dataNascimento:'' }}
-                onSubmit={(values, { resetForm }) => {
-                    salvar(values)
-                    resetForm() 
-                }}
+                initialValues={passageiro}
+                onSubmit={values=>salvar(values)}
             >
                 {({
                     values,
@@ -93,21 +107,18 @@ export default function Page(){
                         </Form.Group>
                         <div className="text-center">
                             <Button onClick={handleSubmit} variant="success">
-                                <FaCheck />  Salvar
+                                <FaCheck /> Salvar
                             </Button>
                             <Link
-                            href="/aeroportos"
-                            className="btn btn-danger ms-2"
+                                href="/empresas"
+                                className="btn btn-danger ms-2"
                             >
-                                <FaArrowLeft /> Voltar
+                                <MdOutlineArrowBack /> Voltar
                             </Link>
-
                         </div>
                     </Form>
                 )}
             </Formik>
         </Pagina>
-    )    
+    )
 }
-
-

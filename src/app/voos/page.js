@@ -7,11 +7,35 @@ import { FaPlusCircle } from "react-icons/fa";
 import { FaArrowLeft } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
+import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 
 export default function Page() {
-  const voos = JSON.parse(localStorage.getItem("voos")) || [];
+  const [voos, setVoos] = useState([])
+
+  useEffect(()=>{
+   setVoos(JSON.parse(localStorage.getItem("voos")) || [])
+  }, [])
  
+  
+  function excluir(id) {
+    Swal.fire({
+      title: "Você tem certeza?",
+      text: "Essa ação não poderá ser desfeita!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sim, excluir!",
+      cancelButtonText: "Não, cancelar!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const dados = voos.filter((item) => item.id !== id);
+        localStorage.setItem("voos", JSON.stringify(dados));
+        setVoos(dados);
+        Swal.fire("Excluído!", "Registro foi excluído.", "success");
+      }
+    });
+  }
 
   return (
     <Pagina titulo="Voos">
@@ -35,9 +59,15 @@ export default function Page() {
         <tbody>
           {voos.map((item, i) => (
             <tr key={item.id}>
-              <td> 
-                <FaEdit className="text-primary" />
-                <MdDelete className="text-danger" />
+              <td>
+               <Link href={`/voos/edit/${item.id}`}>
+                <FaEdit title="Editar"className="text-primary" />
+                </Link>
+                <MdDelete 
+                  title="Excluir"
+                  className="text-danger" 
+                  onClick={()=> excluir(item.id)}  
+                />
               </td>
               <td>{item.iternacional}</td>
               <td>{item.identificador}</td>
@@ -57,3 +87,4 @@ export default function Page() {
     </Pagina>
   );
 }
+

@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import Pagina from "@/app/components/Pagina";
 import { Formik } from "formik";
@@ -20,7 +20,16 @@ export default function Page() {
     return (
         <Pagina titulo="Voo">
             <Formik
-                initialValues={{ internacional:'', identificador: '', dataCheckin: '', dataEmbarque: '', origem: '', destino: '', empresa: '', preco: '' }}
+                initialValues={{ 
+                    internacional: false, // Estado inicial como booleano
+                    identificador: '', 
+                    dataCheckin: '', 
+                    dataEmbarque: '', 
+                    origem: '', 
+                    destino: '', 
+                    empresa: '', 
+                    preco: '' 
+                }}
                 onSubmit={(values, { resetForm }) => {
                     salvar(values);
                     resetForm();
@@ -29,15 +38,16 @@ export default function Page() {
                 {({
                     values,
                     handleChange,
-                    handleSubmit
+                    handleSubmit,
+                    setFieldValue // Adicionando setFieldValue aqui
                 }) => (
-                    <Form>
+                    <Form onSubmit={handleSubmit}>
                         <Form.Group className="mb-3" controlId="internacional">
                             <Form.Label>Internacional</Form.Label>
                             <Form.Check 
                                 type="checkbox"
-                                checked={values.internacional}
-                                onChange={() => handleChange('internacional')(!values.internacional)}
+                                checked={values.internacional} // Corrigido para checked
+                                onChange={() => setFieldValue('internacional', !values.internacional)} // Usando setFieldValue
                             />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="identificador">
@@ -46,7 +56,7 @@ export default function Page() {
                                 type="text" 
                                 name="identificador" 
                                 value={values.identificador}
-                                onChange={handleChange('identificador')}
+                                onChange={handleChange} // Corrigido para usar handleChange
                             />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="dataCheckin">
@@ -55,7 +65,7 @@ export default function Page() {
                                 type="date" 
                                 name="dataCheckin" 
                                 value={values.dataCheckin}
-                                onChange={handleChange('dataCheckin')}
+                                onChange={handleChange}
                             />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="dataEmbarque">
@@ -64,7 +74,7 @@ export default function Page() {
                                 type="date" 
                                 name="dataEmbarque" 
                                 value={values.dataEmbarque}
-                                onChange={handleChange('dataEmbarque')}
+                                onChange={handleChange}
                             />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="origem">
@@ -73,7 +83,7 @@ export default function Page() {
                                 type="text" 
                                 name="origem" 
                                 value={values.origem}
-                                onChange={handleChange('origem')}
+                                onChange={handleChange}
                             />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="destino">
@@ -82,7 +92,7 @@ export default function Page() {
                                 type="text" 
                                 name="destino" 
                                 value={values.destino}
-                                onChange={handleChange('destino')}
+                                onChange={handleChange}
                             />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="empresa">
@@ -91,7 +101,7 @@ export default function Page() {
                                 type="text" 
                                 name="empresa" 
                                 value={values.empresa}
-                                onChange={handleChange('empresa')}
+                                onChange={handleChange}
                             />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="preco">
@@ -100,19 +110,20 @@ export default function Page() {
                                 type="text" 
                                 name="preco" 
                                 value={values.preco}
-                                onChange={handleChange('preco')}
+                                onChange={handleChange}
                             />
                         </Form.Group>
                         <div className="text-center">
                             <Button onClick={handleSubmit} variant="success">
-                                <FaCheck /> Salvar
+                                <FaCheck />  Salvar
                             </Button>
                             <Link
-                                href="/voos"
-                                className="btn btn-danger ms-2"
+                            href="/aeroportos"
+                            className="btn btn-danger ms-2"
                             >
                                 <FaArrowLeft /> Voltar
                             </Link>
+
                         </div>
                     </Form>
                 )}
@@ -120,3 +131,4 @@ export default function Page() {
         </Pagina>
     );
 }
+

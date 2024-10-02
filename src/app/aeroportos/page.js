@@ -7,14 +7,38 @@ import { Table } from "react-bootstrap";
 import { FaArrowLeft } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
+import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 
 
 
 export default function Page() {
 
-    const aeroportos = JSON.parse(localStorage.getItem("aeroportos")) || [];
-    
+    const [aeroportos, setAeroportos] = useState([])
+
+   useEffect(()=>{
+      setAeroportos(JSON.parse(localStorage.getItem("aeroportos")) || [])
+   }, [])
+
+
+   function excluir(id) {
+    Swal.fire({
+      title: "Você tem certeza?",
+      text: "Essa ação não poderá ser desfeita!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sim, excluir!",
+      cancelButtonText: "Não, cancelar!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const dados = aeroportos.filter((item) => item.id !== id);
+        localStorage.setItem("aeroportos", JSON.stringify(dados));
+        setAeroportos(dados);
+        Swal.fire("Excluído!", "Registro foi excluído.", "success");
+      }
+    });
+  }
 
 
   return (
@@ -37,8 +61,14 @@ export default function Page() {
           {aeroportos.map((item) => (
             <tr key={item.id}>
                <td>
-                <FaEdit className="text-primary" />
-                <MdDelete className="text-danger" />
+                <Link href={`/aeroportos/edit/${item.id}`}>
+                  <FaEdit className="text-primary" />
+                </Link>
+                <MdDelete 
+                  title="Excluir"
+                  className="text-danger"
+                  onClick={()=> excluir(item.id)}
+                  />
               </td>
               <td>{item.nome}</td>
               <td>{item.sigla}</td>
@@ -55,3 +85,4 @@ export default function Page() {
     </Pagina>
   );
 }
+
