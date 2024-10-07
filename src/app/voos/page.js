@@ -18,28 +18,28 @@ export default function Page() {
    setVoos(JSON.parse(localStorage.getItem("voos")) || [])
   }, [])
  
-  
-  function excluir(id) {
-    Swal.fire({
-      title: "Você tem certeza?",
-      text: "Essa ação não poderá ser desfeita!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Sim, excluir!",
-      cancelButtonText: "Não, cancelar!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const dados = voos.filter((item) => item.id !== id);
-        localStorage.setItem("voos", JSON.stringify(dados));
-        setVoos(dados);
-        Swal.fire("Excluído!", "Registro foi excluído.", "success");
-      }
-    });
-  }
+    function excluir(id) {
+      Swal.fire({
+        title: "Você tem certeza?", 
+        text: "Essa ação não poderá ser desfeita!", 
+        icon: "warning",  
+        showCancelButton: true,
+        confirmButtonText: "Sim, excluir!", 
+        cancelButtonText: "Não, cancelar!", 
+      }).then((resultado) => {  
+        if (resultado.isConfirmed) {  
+          const dados = voos.filter((item) => item.id !== id);  
+          localStorage.setItem("voos", JSON.stringify(dados)); 
+          setVoos(dados); 
+          Swal.fire("Excluído!", "Registro foi excluído.", "success"); 
+        }
+      });
+    }
+    
 
   return (
     <Pagina titulo="Voos">
-      <Link href="/voos/create" className="btn btn-primary mb-3">
+      <Link href="/voos/form" className="btn btn-primary mb-3">
         <FaPlusCircle /> Novo
       </Link>
       <Table striped bordered hover size="sm">
@@ -60,7 +60,7 @@ export default function Page() {
           {voos.map((item, i) => (
             <tr key={item.id}>
               <td>
-               <Link href={`/voos/edit/${item.id}`}>
+               <Link href={`/voos/form/${item.id}`}>
                 <FaEdit title="Editar"className="text-primary" />
                 </Link>
                 <MdDelete 
@@ -69,7 +69,7 @@ export default function Page() {
                   onClick={()=> excluir(item.id)}  
                 />
               </td>
-              <td>{item.iternacional}</td>
+              <td>{item.internacional ? "Sim" : "Não"}</td>
               <td>{item.identificador}</td>
               <td>{item.dataCheckin}</td>
               <td>{item.dataEmbarque}</td>

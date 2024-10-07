@@ -9,16 +9,13 @@ import { FaEdit } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
-
 export default function Page() {
+  const [passageiros, setPassageiros] = useState([]);
 
-  const [passageiros, setPassageiros] = useState([])
+  useEffect(() => {
+    setPassageiros(JSON.parse(localStorage.getItem("passageiros")) || []);
+  }, []);
 
-  useEffect(()=>{
-    setPassageiros(JSON.parse(localStorage.getItem("passageiros")) || [])
-  }, [])
- 
-  
   function excluir(id) {
     Swal.fire({
       title: "Você tem certeza?",
@@ -27,8 +24,8 @@ export default function Page() {
       showCancelButton: true,
       confirmButtonText: "Sim, excluir!",
       cancelButtonText: "Não, cancelar!",
-    }).then((result) => {
-      if (result.isConfirmed) {
+    }).then((resultado) => {
+      if (resultado.isConfirmed) {
         const dados = passageiros.filter((item) => item.id !== id);
         localStorage.setItem("passageiros", JSON.stringify(dados));
         setPassageiros(dados);
@@ -39,8 +36,8 @@ export default function Page() {
 
   return (
     <Pagina titulo="Passageiros">
-      <Link href="/passageiros/create" className="btn btn-primary mb-3">
-      <FaPlusCircle />   Novo 
+      <Link href="/passageiros/form" className="btn btn-primary mb-3">
+        <FaPlusCircle /> Novo
       </Link>
       <Table striped bordered hover size="sm">
         <thead>
@@ -57,17 +54,17 @@ export default function Page() {
         <tbody>
           {passageiros.map((item, i) => (
             <tr key={item.id}>
-               <td>
-               <Link href={`/passageiros/edit/${item.id}`}>
-                <FaEdit title="Editar"className="text-primary" />
+              <td>
+                <Link href={`/passageiros/form/${item.id}`}>
+                  <FaEdit title="Editar" className="text-primary" />
                 </Link>
-                <MdDelete 
+                <MdDelete
                   title="Excluir"
-                  className="text-danger" 
-                  onClick={()=> excluir(item.id)}  
+                  className="text-danger"
+                  onClick={() => excluir(item.id)}
                 />
               </td>
-              <td>{item.nome}</td>
+              <td>{item.nomeCompleto}</td>
               <td>{item.tipoDocumento}</td>
               <td>{item.documento}</td>
               <td>{item.email}</td>
@@ -83,4 +80,3 @@ export default function Page() {
     </Pagina>
   );
 }
-

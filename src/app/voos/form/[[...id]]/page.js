@@ -4,16 +4,18 @@ import Pagina from "@/app/components/Pagina";
 import { Formik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { FaCheck } from "react-icons/fa";
-import { MdOutlineArrowBack, } from "react-icons/md";
+import { MdOutlineArrowBack } from "react-icons/md";
 import { v4 } from "uuid";
 
 export default function Page({ params }) {
   const route = useRouter();
 
-  const [voo, setVoo] = useState({
+  const voos = JSON.parse(localStorage.getItem("voos")) || [];
+  const dados = voos.find((item) => item.id == params.id);
+
+  const voo = dados || {
     internacional: false,
     identificador: "",
     dataCheckin: "",
@@ -22,39 +24,36 @@ export default function Page({ params }) {
     destino: "",
     empresa: "",
     preco: "",
-  });
-
-  useEffect(() => {
-    const voos = JSON.parse(localStorage.getItem("voos")) || [];
-    const dados = voos.find((item) => item.id == params.id);
-    setVoo(dados);
-  }, []);
+  };
 
   function salvar(dados) {
-    const voos = JSON.parse(localStorage.getItem("voos")) || [];
-
-    //Gerando Id com a biblioteca do uuid va
-    dados.id = v4();
-
-    voos.push(dados);
+    if (voo.id) {
+      Object.assign(voo, dados);
+    } else {
+      dados.id = v4();
+      voos.push(dados);
+    }
     localStorage.setItem("voos", JSON.stringify(voos));
     return route.push("/voos");
   }
 
   return (
     <Pagina titulo="Voo">
-      <Formik initialValues={voo} onSubmit={(values) => salvar(values)}>
-        {({ values, handleChange, handleSubmit, setFieldValue }) => (
+      <Formik initialValues={voo}   
+      onSubmit={(values) => salvar(values)}>
+        {({ 
+            values, 
+            handleChange, 
+            handleSubmit, 
+            setFieldValue 
+        }) => (
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="internacional">
               <Form.Label>Internacional</Form.Label>
               <Form.Check
                 type="checkbox"
-                label="Internacional"
                 checked={values.internacional}
-                onChange={() =>
-                  setFieldValue("internacional", !values.internacional)
-                }
+                onChange={() => setFieldValue('internacional', !values.internacional)}
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="identificador">
@@ -111,12 +110,21 @@ export default function Page({ params }) {
                 onChange={handleChange}
               />
             </Form.Group>
+            <Form.Group className="mb-3" controlId="preco">
+              <Form.Label>Preço</Form.Label>
+              <Form.Control
+                type="text"
+                name="preco"
+                value={values.preco}
+                onChange={handleChange}
+              />
+            </Form.Group>
             <div className="text-center">
               <Button onClick={handleSubmit} variant="success">
                 <FaCheck /> Salvar
               </Button>
-              <Link href="/empresas" className="btn btn-danger ms-2">
-              <MdOutlineArrowBack /> Voltar
+              <Link href="/voos" className="btn btn-danger ms-2">
+                <MdOutlineArrowBack /> Voltar
               </Link>
             </div>
           </Form>

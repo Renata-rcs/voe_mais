@@ -10,16 +10,12 @@ import { FaEdit } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
-
 export default function Page() {
+  const [empresas, setEmpresas] = useState([]);
 
-  const [empresas, setEmpresas] = useState([])
-
-  useEffect(()=>{
-    setEmpresas(JSON.parse(localStorage.getItem("empresas")) || [])
-  }, [])
-
-  
+  useEffect(() => {
+    setEmpresas(JSON.parse(localStorage.getItem("empresas")) || []);
+  }, []);
 
   function excluir(id) {
     Swal.fire({
@@ -29,8 +25,8 @@ export default function Page() {
       showCancelButton: true,
       confirmButtonText: "Sim, excluir!",
       cancelButtonText: "Não, cancelar!",
-    }).then((result) => {
-      if (result.isConfirmed) {
+    }).then((resultado) => {
+      if (resultado.isConfirmed) {
         const dados = empresas.filter((item) => item.id !== id);
         localStorage.setItem("empresas", JSON.stringify(dados));
         setEmpresas(dados);
@@ -38,8 +34,7 @@ export default function Page() {
       }
     });
   }
-  
-  
+
   //   let empresas = localStorage.getItem('empresas')
   //   empresas = empresas ? JSON.parse(empresas) : []
 
@@ -52,8 +47,8 @@ export default function Page() {
 
   return (
     <Pagina titulo="Empresas">
-      <Link href="/empresas/create" className="btn btn-primary mb-3">
-        <FaPlusCircle />   Novo 
+      <Link href="/empresas/form" className="btn btn-primary mb-3">
+        <FaPlusCircle /> Novo
       </Link>
 
       <Table striped bordered hover size="sm">
@@ -68,14 +63,13 @@ export default function Page() {
           {empresas.map((item) => (
             <tr key={item.id}>
               <td>
-              {item.id}
-                <Link href={`/empresas/edit/${item.id}`}>
-                <FaEdit title="Editar"className="text-primary" />
+                <Link href={`/empresas/form/${item.id}`}>
+                  <FaEdit title="Editar" className="text-primary" />
                 </Link>
-                <MdDelete 
+                <MdDelete
                   title="Excluir"
-                  className="text-danger" 
-                  onClick={()=> excluir(item.id)}  
+                  className="text-danger"
+                  onClick={() => excluir(item.id)}
                 />
               </td>
               <td>{item.nome}</td>
@@ -84,7 +78,6 @@ export default function Page() {
                   <img src={item.logo} width={100}></img>
                 </a>
               </td>
-             
             </tr>
           ))}
         </tbody>
@@ -95,5 +88,3 @@ export default function Page() {
     </Pagina>
   );
 }
-
-
