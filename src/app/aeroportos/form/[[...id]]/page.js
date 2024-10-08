@@ -1,9 +1,11 @@
 "use client";
 
 import Pagina from "@/app/components/Pagina";
+import apiLocalidade from "@/app/services/apiLocalidade";
 import { Formik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { use, useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { FaCheck } from "react-icons/fa";
 import { MdOutlineArrowBack } from "react-icons/md";
@@ -20,8 +22,23 @@ export default function Page({ params }) {
     sigla: "",
     uf: "",
     cidade: "",
-    pais: "",
+    pais:'Brasil'
   };
+
+  const [paises, setpaises] = useState([]);
+  const [ufs, setUfs] = useState([]);
+  const [cidades, setCidades] = useState([]);
+  const [camposBrasil, setCamposBrasil] = useState(false)
+
+  useEffect(() => {
+    apiLocalidade.get(`/paises`).then((resultado) => {
+      setpaises(resultado.data);
+    });
+      apiLocalidade.get(`/estados?orderBy=nome`).then((resultado) => {
+        setUfs(resultado.data);
+    });
+  },[])
+  
 
   function salvar(dados) {
     if (aeroporto.id) {
@@ -37,63 +54,95 @@ export default function Page({ params }) {
   return (
     <Pagina titulo="Aeroporto">
       <Formik initialValues={aeroporto} onSubmit={(values) => salvar(values)}>
-        {({ values, handleChange, handleSubmit }) => (
-          <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-3" controlId="nome">
-              <Form.Label>Nome</Form.Label>
-              <Form.Control
-                type="text"
-                name="nome"
-                value={values.nome}
-                onChange={handleChange("nome")}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="sigla">
-              <Form.Label>Sigla</Form.Label>
-              <Form.Control
-                type="text"
-                name="sigla"
-                value={values.sigla}
-                onChange={handleChange("sigla")}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="uf">
-              <Form.Label>UF</Form.Label>
-              <Form.Control
-                type="text"
-                name="uf"
-                value={values.uf}
-                onChange={handleChange("uf")}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="cidade">
-              <Form.Label>Cidade</Form.Label>
-              <Form.Control
-                type="text"
-                name="cidade"
-                value={values.cidade}
-                onChange={handleChange("cidade")}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="pais">
-              <Form.Label>País</Form.Label>
-              <Form.Control
-                type="text"
-                name="pais"
-                value={values.pais}
-                onChange={handleChange("pais")}
-              />
-            </Form.Group>
-            <div className="text-center">
-              <Button onClick={handleSubmit} variant="success">
-                <FaCheck /> Salvar
-              </Button>
-              <Link href="/aeroportos" className="btn btn-danger ms-2">
-                <MdOutlineArrowBack /> Voltar
-              </Link>
-            </div>
-          </Form>
-        )}
+        {({ 
+          values,
+          handleChange,
+          handleSubmit
+         }) => {
+
+            useEffect(()=>{
+                setCamposBrasil(values.pais == 'Brasil')
+            }, [values.pais])
+
+            useEffect(()=>{
+              apiLocalidade.get(`estados/${values.uf}/municipios`).then((resultado) => {
+                setCidades(resultado.data);
+            });
+
+            }, [values.uf])
+
+            return (
+              <Form onSubmit={handleSubmit}>
+                <Form.Group className="mb-3" controlId="nome">
+                  <Form.Label>Nome</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="nome"
+                    value={values.nome}
+                    onChange={handleChange("nome")}
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="sigla">
+                  <Form.Label>Sigla</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="sigla"
+                    value={values.sigla}
+                    onChange={handleChange("sigla")}
+                  />
+                </Form.Group>
+                {camposBrasil && <>
+                  
+                <Form.Label>Uf</Form.Label>
+                <Form.Select className="mb-3"
+                  name="uf"
+                  value={values.uf}
+                  onChange={handleChange("uf")}>
+                  <option value=''>Selecione</option>
+                  {ufs.map(item=>(
+                     <option key={item.sigla} value={item.sigla}>{item.sigla}-{item.nome}</option>
+                  ))}
+                  
+                </Form.Select>
+
+                <Form.Label>Cidade</Form.Label>
+                <Form.Select className="mb-3"
+                  name="cidade"
+                  value={values.cidade}
+                  onChange={handleChange("cidade")}>
+                  <option value=''>Selecione</option>
+                  {cidades.map(item=>(
+                     <option key={item.nome} value={item.nome}>{item.nome}</option>
+                  ))}
+                  
+                </Form.Select>        
+                </>
+                }
+               
+                <Form.Label>País</Form.Label>
+                <Form.Select className="mb-3"
+                  name="pais"
+                  value={values.pais}
+                  onChange={handleChange("pais")}>
+                  <option value=''>Selecione</option>
+                  {paises.map(item=>(
+                     <option key={item.nome} value={item.nome}>{item.nome}</option>
+                  ))}
+                  
+                </Form.Select>
+                <div className="text-center">
+                  <Button onClick={handleSubmit} variant="success">
+                    <FaCheck /> Salvar
+                  </Button>
+                  <Link href="/aeroportos" className="btn btn-danger ms-2">
+                    <MdOutlineArrowBack /> Voltar
+                  </Link>
+                </div>
+              </Form>
+            )
+         }
+          
+         }
       </Formik>
     </Pagina>
   );
