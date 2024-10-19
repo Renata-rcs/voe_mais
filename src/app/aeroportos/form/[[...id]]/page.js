@@ -10,6 +10,7 @@ import { Button, Form } from "react-bootstrap";
 import { FaCheck } from "react-icons/fa";
 import { MdOutlineArrowBack } from "react-icons/md";
 import { v4 } from "uuid";
+import AeroportosValidator from "@/validators/AeroportosValidator";
 
 export default function Page({ params }) {
   const route = useRouter();
@@ -53,11 +54,14 @@ export default function Page({ params }) {
 
   return (
     <Pagina titulo="Aeroporto">
-      <Formik initialValues={aeroporto} onSubmit={(values) => salvar(values)}>
+      <Formik initialValues={aeroporto} 
+       validationSchema={AeroportosValidator}
+      onSubmit={(values) => salvar(values)}>
         {({ 
           values,
           handleChange,
-          handleSubmit
+          handleSubmit,
+          errors
          }) => {
 
             useEffect(()=>{
@@ -80,7 +84,12 @@ export default function Page({ params }) {
                     name="nome"
                     value={values.nome}
                     onChange={handleChange("nome")}
-                  />
+                    isInvalid={errors}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.nome}
+                    </Form.Control.Feedback>
+                  
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="sigla">
                   <Form.Label>Sigla</Form.Label>
@@ -89,7 +98,12 @@ export default function Page({ params }) {
                     name="sigla"
                     value={values.sigla}
                     onChange={handleChange("sigla")}
-                  />
+                    isInvalid={errors}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.sigla}
+                    </Form.Control.Feedback>
+                  
                 </Form.Group>
                 {camposBrasil && <>
                   
@@ -97,25 +111,34 @@ export default function Page({ params }) {
                 <Form.Select className="mb-3"
                   name="uf"
                   value={values.uf}
-                  onChange={handleChange("uf")}>
+                  onChange={handleChange("uf")}
+                  isInvalid={errors}
+                  >
                   <option value=''>Selecione</option>
                   {ufs.map(item=>(
                      <option key={item.sigla} value={item.sigla}>{item.sigla}-{item.nome}</option>
                   ))}
                   
                 </Form.Select>
-
+                <Form.Control.Feedback type="invalid">
+                      {errors.uf}
+                    </Form.Control.Feedback>
                 <Form.Label>Cidade</Form.Label>
                 <Form.Select className="mb-3"
                   name="cidade"
                   value={values.cidade}
-                  onChange={handleChange("cidade")}>
+                  onChange={handleChange("cidade")}
+                  isInvalid={errors}
+                  >
                   <option value=''>Selecione</option>
                   {cidades.map(item=>(
                      <option key={item.nome} value={item.nome}>{item.nome}</option>
                   ))}
                   
-                </Form.Select>        
+                </Form.Select>   
+                <Form.Control.Feedback type="invalid">
+                      {errors.cidade}
+                    </Form.Control.Feedback>     
                 </>
                 }
                
@@ -123,13 +146,18 @@ export default function Page({ params }) {
                 <Form.Select className="mb-3"
                   name="pais"
                   value={values.pais}
-                  onChange={handleChange("pais")}>
+                  onChange={handleChange("pais")}
+                  isInvalid={errors}
+                  >
                   <option value=''>Selecione</option>
                   {paises.map(item=>(
                      <option key={item.nome} value={item.nome}>{item.nome}</option>
                   ))}
                   
                 </Form.Select>
+                <Form.Control.Feedback type="invalid">
+                      {errors.pais}
+                    </Form.Control.Feedback>
                 <div className="text-center">
                   <Button onClick={handleSubmit} variant="success">
                     <FaCheck /> Salvar
