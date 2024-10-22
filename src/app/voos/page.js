@@ -50,7 +50,7 @@ export default function Page() {
             <th>Identificador</th>
             <th>Data_Checkin</th>
             <th>Data_Embarque</th>
-            <th>Origin</th>
+            <th>Origem</th>
             <th>Destino</th>
             <th>Empresa</th>
             <th>Preço</th>
@@ -73,10 +73,10 @@ export default function Page() {
               <td>{item.identificador}</td>
               <td>{item.dataCheckin}</td>
               <td>{item.dataEmbarque}</td>
-              <td>{item.origin}</td>
+              <td>{item.origem}</td>
               <td>{item.destino}</td>
-              <td>{item.empresan}</td>
-              <td>{item.preço}</td>
+              <td>{item.empresa}</td>
+              <td>{item.preco}</td>
             </tr>
           ))}
         </tbody>

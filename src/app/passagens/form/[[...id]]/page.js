@@ -8,6 +8,7 @@ import { Button, Form } from "react-bootstrap";
 import { FaCheck } from "react-icons/fa";
 import { MdOutlineArrowBack } from "react-icons/md";
 import { v4 } from "uuid";
+import PassagensValidator from "@/validators/PassagensValidator";
 
 export default function Page({ params }) {
   const route = useRouter();
@@ -35,55 +36,80 @@ export default function Page({ params }) {
 
   return (
     <Pagina titulo="Passagens">
-      <Formik initialValues={passagem} onSubmit={(values) => salvar(values)}>
-        {({ values, handleChange, handleSubmit }) => (
-          <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-3" controlId="voo">
-              <Form.Label>Voo</Form.Label>
-              <Form.Control
-                type="text"
-                name="voo"
-                value={values.voo}
-                onChange={handleChange}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="passageiro">
-              <Form.Label>Passageiro</Form.Label>
-              <Form.Control
-                type="text"
-                name="passageiro"
-                value={values.passageiro}
-                onChange={handleChange}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="assento">
-              <Form.Label>Assento</Form.Label>
-              <Form.Control
-                type="text"
-                name="assento"
-                value={values.assento}
-                onChange={handleChange}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="preco">
-              <Form.Label>Preço</Form.Label>
-              <Form.Control
-                type="text"
-                name="preco"
-                value={values.preco}
-                onChange={handleChange}
-              />
-            </Form.Group>
-            <div className="text-center">
-              <Button onClick={handleSubmit} variant="success">
-                <FaCheck /> Salvar
-              </Button>
-              <Link href="/passagens" className="btn btn-danger ms-2">
-                <MdOutlineArrowBack /> Voltar
-              </Link>
-            </div>
-          </Form>
-        )}
+      <Formik initialValues={passagem} 
+      validationSchema={PassagensValidator}
+      onSubmit={(values) => salvar(values)}>
+        {({ 
+          values, 
+          handleChange, 
+          handleSubmit,
+          errors
+       }) => {
+          return (
+            <Form onSubmit={handleSubmit}>
+              <Form.Group className="mb-3" controlId="voo">
+                <Form.Label>Voo</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="voo"
+                  value={values.voo}
+                  onChange={handleChange}
+                  isInvalid={errors}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {errors.voo}
+                  </Form.Control.Feedback>
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="passageiro">
+                <Form.Label>Passageiro</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="passageiro"
+                  value={values.passageiro}
+                  onChange={handleChange}
+                  isInvalid={errors}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {errors.passageiro}
+                  </Form.Control.Feedback>
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="assento">
+                <Form.Label>Assento</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="assento"
+                  value={values.assento}
+                  onChange={handleChange}
+                  isInvalid={errors}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {errors.assento}
+                  </Form.Control.Feedback>
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="preco">
+                <Form.Label>Preço</Form.Label>
+                <Form.Control
+                  type="float"
+                  name="preco"
+                  value={values.preco}
+                  onChange={handleChange}
+                  isInvalid={errors}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {errors.preco}
+                  </Form.Control.Feedback>
+              </Form.Group>
+              <div className="text-center">
+                <Button onClick={handleSubmit} variant="success">
+                  <FaCheck /> Salvar
+                </Button>
+                <Link href="/passagens" className="btn btn-danger ms-2">
+                  <MdOutlineArrowBack /> Voltar
+                </Link>
+              </div>
+            </Form>
+          )
+       } }
       </Formik>
     </Pagina>
   );
