@@ -57,7 +57,7 @@ export default function Page({ params }) {
                     name="nome"
                     value={values.nome}
                     onChange={handleChange("nome")}
-                     isInvalid={errors}
+                     isInvalid={errors.nome}
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.nome}
@@ -70,7 +70,7 @@ export default function Page({ params }) {
                     name="logo"
                     value={values.logo}
                     onChange={handleChange("logo")}
-                    isInvalid={errors}
+                    isInvalid={errors.logo}
                     />
                     <Form.Control.Feedback type="invalid">
                       {errors.logo}
@@ -84,7 +84,7 @@ export default function Page({ params }) {
                     name="site"
                     value={values.site}
                     onChange={handleChange("site")}
-                     isInvalid={errors}
+                     isInvalid={errors.site}
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.nome}

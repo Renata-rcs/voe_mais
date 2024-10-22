@@ -84,7 +84,7 @@ export default function Page({ params }) {
                     name="nome"
                     value={values.nome}
                     onChange={handleChange("nome")}
-                    isInvalid={errors}
+                    isInvalid={errors.nome}
                     />
                     <Form.Control.Feedback type="invalid">
                       {errors.nome}
@@ -98,7 +98,7 @@ export default function Page({ params }) {
                     name="sigla"
                     value={values.sigla}
                     onChange={handleChange("sigla")}
-                    isInvalid={errors}
+                    isInvalid={errors.sigla}
                     />
                     <Form.Control.Feedback type="invalid">
                       {errors.sigla}
@@ -112,7 +112,7 @@ export default function Page({ params }) {
                   name="uf"
                   value={values.uf}
                   onChange={handleChange("uf")}
-                  isInvalid={errors}
+                  isInvalid={errors.uf}
                   >
                   <option value=''>Selecione</option>
                   {ufs.map(item=>(
@@ -128,7 +128,7 @@ export default function Page({ params }) {
                   name="cidade"
                   value={values.cidade}
                   onChange={handleChange("cidade")}
-                  isInvalid={errors}
+                  isInvalid={errors.cidade}
                   >
                   <option value=''>Selecione</option>
                   {cidades.map(item=>(
@@ -147,7 +147,7 @@ export default function Page({ params }) {
                   name="pais"
                   value={values.pais}
                   onChange={handleChange("pais")}
-                  isInvalid={errors}
+                  isInvalid={errors.pais}
                   >
                   <option value=''>Selecione</option>
                   {paises.map(item=>(

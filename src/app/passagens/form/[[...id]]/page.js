@@ -54,7 +54,7 @@ export default function Page({ params }) {
                   name="voo"
                   value={values.voo}
                   onChange={handleChange}
-                  isInvalid={errors}
+                  isInvalid={errors.voo}
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.voo}
@@ -67,7 +67,7 @@ export default function Page({ params }) {
                   name="passageiro"
                   value={values.passageiro}
                   onChange={handleChange}
-                  isInvalid={errors}
+                  isInvalid={errors.passageiro}
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.passageiro}
@@ -76,11 +76,11 @@ export default function Page({ params }) {
               <Form.Group className="mb-3" controlId="assento">
                 <Form.Label>Assento</Form.Label>
                 <Form.Control
-                  type="text"
+                  type="number"
                   name="assento"
                   value={values.assento}
                   onChange={handleChange}
-                  isInvalid={errors}
+                  isInvalid={errors.assento}
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.assento}
@@ -89,11 +89,11 @@ export default function Page({ params }) {
               <Form.Group className="mb-3" controlId="preco">
                 <Form.Label>Preço</Form.Label>
                 <Form.Control
-                  type="float"
+                  type="Number"
                   name="preco"
                   value={values.preco}
                   onChange={handleChange}
-                  isInvalid={errors}
+                  isInvalid={errors.preco}
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.preco}

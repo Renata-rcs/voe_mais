@@ -88,7 +88,7 @@ export default function Page({ params }) {
                       name="nomeCompleto"
                       value={values.nomeCompleto}
                       onChange={handleChange}
-                      isInvalid={errors}
+                      isInvalid={errors.nomeCompleto}
                       />
                       <Form.Control.Feedback type="invalid">
                         {errors.nomeCompleto}
@@ -101,7 +101,7 @@ export default function Page({ params }) {
                       name="tipoDocumento"
                       value={values.tipoDocumento}
                       onChange={handleChange('tipoDocumento')}
-                      isInvalid={errors}
+                      isInvalid={errors.tipoDocumento}
                       >
                       <option value=''>Selecione</option>
                       <option value='CPF'>CPF</option>
@@ -121,7 +121,7 @@ export default function Page({ params }) {
                       name="documento"
                       value={values.documento}
                       onChange={handleChange}
-                      isInvalid={errors}
+                      isInvalid={errors.documento}
                       />
                       <Form.Control.Feedback type="invalid">
                         {errors.documento}
@@ -134,7 +134,7 @@ export default function Page({ params }) {
                       name="email"
                       value={values.email}
                       onChange={handleChange}
-                      isInvalid={errors}
+                      isInvalid={errors.email}
                     />
                     <Form.Control.Feedback type="invalid">
                       {errors.email}
@@ -149,7 +149,7 @@ export default function Page({ params }) {
                       onChange={(value)=>{
                        setFieldValue('telefone', mask(value.target.value, '(99) 99999-9999'))
                       }}
-                      isInvalid={errors}
+                      isInvalid={errors.telefone}
                     />
                     <Form.Control.Feedback type="invalid">
                       {errors.telefone}
@@ -162,7 +162,7 @@ export default function Page({ params }) {
                       name="dataNascimento"
                       value={values.dataNascimento}
                       onChange={(value) => {setFieldValue('dataNascimento', mask(value.target.value, '99/99/9999'))}}
-                      isInvalid={errors}
+                      isInvalid={errors.dataNascimento}
                     />
                     <Form.Control.Feedback type="invalid">
                       {errors.date}

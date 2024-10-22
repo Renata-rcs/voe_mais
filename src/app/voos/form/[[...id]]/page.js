@@ -10,6 +10,7 @@ import { FaCheck } from "react-icons/fa";
 import { MdOutlineArrowBack } from "react-icons/md";
 import { v4 } from "uuid";
 import VoosValidator from "@/validators/VoosValidator";
+import { mask } from "remask";
 
 export default function Page({ params }) {
   const route = useRouter();
@@ -59,7 +60,7 @@ export default function Page({ params }) {
             handleChange, 
             handleSubmit, 
             setFieldValue,
-            errors
+            errors,
         }) => {
           return (
             <Form onSubmit={handleSubmit}>
@@ -68,12 +69,8 @@ export default function Page({ params }) {
                 <Form.Check
                   type="checkbox"
                   checked={values.internacional}
-                  onChange={() => setFieldValue('internacional', !values.internacional)}
-                  isInvalid={errors}
+                  onChange={handleChange}
                   />
-                  <Form.Control.Feedback type="invalid">
-                    {errors.internacional}
-                  </Form.Control.Feedback>
               </Form.Group>
               <Form.Group className="mb-3" controlId="identificador">
                 <Form.Label>Identificador</Form.Label>
@@ -82,7 +79,7 @@ export default function Page({ params }) {
                   name="identificador"
                   value={values.identificador}
                   onChange={handleChange}
-                  isInvalid={errors}
+                  isInvalid={errors.identificador}
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.identificador}
@@ -94,8 +91,8 @@ export default function Page({ params }) {
                   type="date"
                   name="dataCheckin"
                   value={values.dataCheckin}
-                  onChange={handleChange}
-                  isInvalid={errors}
+                  onChange={(value) => {setFieldValue('dataCheckin', mask(value.target.value, '99/99/9999'))}}
+                  isInvalid={errors.dataCheckin}
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.dataCheckin}
@@ -107,8 +104,8 @@ export default function Page({ params }) {
                   type="date"
                   name="dataEmbarque"
                   value={values.dataEmbarque}
-                  onChange={handleChange}
-                  isInvalid={errors}
+                  onChange={(value) => {setFieldValue('dataEmbarque', mask(value.target.value, '99/99/9999'))}}
+                  isInvalid={errors.dataEmbarque}
                   />
                   <Form.Control.Feedback type="invalid">
                     {errors.dataEmbarque}
@@ -120,7 +117,7 @@ export default function Page({ params }) {
                     name="origem"
                     value={values.origem}
                     onChange={handleChange("origem")}
-                    isInvalid={errors}
+                    isInvalid={errors.origem}
                     >
                     <option value=''>Selecione</option>
                     {aeroportos.map(item=>(
@@ -137,7 +134,7 @@ export default function Page({ params }) {
                     name="destino"
                     value={values.destino}
                     onChange={handleChange("destino")}
-                    isInvalid={errors}
+                    isInvalid={errors.destino}
                     >
                     <option value=''>Selecione</option>
                     {aeroportos.map(item=>(
@@ -155,7 +152,7 @@ export default function Page({ params }) {
                     name="empresa"
                     value={values.empresa}
                     onChange={handleChange("empresa")}
-                    isInvalid={errors}
+                    isInvalid={errors.empresa}
                     >
                     <option value=''>Selecione</option>
                     {empresas.map(item=>(
@@ -175,7 +172,7 @@ export default function Page({ params }) {
                   name="preco"
                   value={values.preco}
                   onChange={handleChange("preco")}
-                  isInvalid={errors}
+                  isInvalid={errors.preco}
                 />
               </Form.Group>
               <Form.Control.Feedback type="invalid">
